@@ -35,10 +35,8 @@ public class AccountService {
             if (accountRepository.findAccountByUsername(username) != null)
                 return accountRepository.save(new Account(username, password));
         }
-        else
-        {
-            return null;
-        }
+        return null;
+        
     }
 
     /**
