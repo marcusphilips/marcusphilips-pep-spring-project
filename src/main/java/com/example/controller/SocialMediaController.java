@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.http.HttpStatus;
@@ -30,27 +31,23 @@ import org.springframework.context.ApplicationContext;
  */
 @RestController
 public class SocialMediaController {
-//     private AccountService accountService;
-//     private MessageService messageService;
-    public SocialMediaController() {
-        // ApplicationContext applicationContext = SpringApplication.run(SocialMediaController.class);
-        // accountService = applicationContext.getBean(AccountService.class);
-        // messageService = applicationContext.getBean(MessageService.class);
-    }
+    private AccountService accountService;
+    private MessageService messageService;
 
     @PostMapping("register")
-    public @ResponseBody String register(@RequestParam String username, @RequestParam String password) {
-        // Account account = accountService.addAccount(username, password);
-        // ObjectMapper mapper = new ObjectMapper();
-        // if (account == null){
-        //     // I don't know the error so . . .
-        //     return ResponseEntity.status(409).body(null);
-        // }
-        // else{
-        //     String json = mapper.writeValueAsString(account);
-        //     return ResponseEntity.status(200).body(json);
-        // }
-        return "testing . . . ";
+    public ResponseEntity<String> register(@RequestBody String jsonAccount) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        Account registered = mapper.readValue(jsonAccount, Account.class);
+        Account account = accountService.addAccount(registered.getUsername(), registered.getPassword());
+        
+        if (account == null){
+            // I don't know the error so . . .
+            return ResponseEntity.status(409).body(null);
+        }
+        else{
+            String json = mapper.writeValueAsString(account);
+            return ResponseEntity.status(200).body(json);
+        }
     }
 
 }
