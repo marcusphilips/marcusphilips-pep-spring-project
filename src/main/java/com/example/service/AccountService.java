@@ -32,7 +32,7 @@ public class AccountService {
     public Account addAccount(String username, String password){
         if (username.length() != 0 && password.length() >= 4){
             // does the account's username already exist?
-            if (accountRepository.findAccountByUsername(username) != null)
+            if (accountRepository.findAccountByUsername(username) == null)
                 return accountRepository.save(new Account(username, password));
         }
         return null;

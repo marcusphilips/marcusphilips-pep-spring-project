@@ -30,7 +30,7 @@ public class MessageService {
     public Message postMessage(int postedBy, String messageBody, long postedOn){
         if (messageBody.length() > 0 && messageBody.length() <= 255){
             // message text is valid; is postedBy valid?
-            Optional<Account> account = accountRepository.findById((long)postedBy);
+            Optional<Account> account = accountRepository.findById(postedBy);
             if (account.isPresent()){
                 // valid postedBy
                 return messageRepository.save( new Message(postedBy, messageBody, postedOn) );
@@ -51,7 +51,7 @@ public class MessageService {
      * @param id
      * @return
      */
-    public Message getMessageByID(long id) {
+    public Message getMessageByID(int id) {
         Optional<Message> messageOptional = messageRepository.findById(id);
         if (messageOptional.isPresent()){
             return messageOptional.get();
@@ -65,7 +65,7 @@ public class MessageService {
      * Deletes message by its ID.
      * @return did it delete a message?
      */
-    public boolean deleteMessageByID(long id){
+    public boolean deleteMessageByID(int id){
         if (messageRepository.findById(id).isPresent()){
             messageRepository.deleteById(id);
             return true;
@@ -74,7 +74,7 @@ public class MessageService {
     }
 
 
-    public Message updateMessage(long id, String newMessageText){
+    public Message updateMessage(int id, String newMessageText){
         if (newMessageText.length() > 0 && newMessageText.length() <= 255)
             return null;
         Optional<Message> OptMessage = messageRepository.findById(id);
