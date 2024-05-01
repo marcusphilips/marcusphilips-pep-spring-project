@@ -74,17 +74,18 @@ public class MessageService {
     }
 
 
-    public Message updateMessage(int id, String newMessageText){
-        if (newMessageText.length() > 0 && newMessageText.length() <= 255)
-            return null;
+    public boolean updateMessage(int id, String newMessageText){
+        if (newMessageText.length() == 0 || newMessageText.length() > 255)
+            return false;
         Optional<Message> OptMessage = messageRepository.findById(id);
         if (OptMessage.isPresent()){
             Message message = OptMessage.get();
             message.setMessageText(newMessageText);
-            return messageRepository.save(message);
+            messageRepository.save(message);
+            return true;
         }
         else{
-            return null;
+            return false;
         }
     }
 
